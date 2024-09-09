@@ -1,41 +1,39 @@
 <template>
-  <div>
-      <label for="place-select">Selecciona un lugar</label>
-      <select v-model="selectedPlace" id="place-select">
-          <option v-for="place in places" :key="place.name" :value="place.name">
-            {{ place.name }}
-          </option>
-      </select>
-      <button @click="addPlace">Añadir un lugar</button>
-  </div>
+<div id="#app">
+  <h1>Lugares que quiero visitar</h1>
+  <PlaceForm @add-place="handleAddPlace"/>
+  <ul>
+    <li v-for="place in placesToVisit" :key="place">
+      {{ place }}
+      <button @click="removePlace(place)">Eliminar</button>
+    </li>
+  </ul>
+</div>
 </template>
 
 <script>
-import axios from 'axios';
+import PlaceForm from './components/PlaceForm.vue';
 
-export default{
-  data() {
-      return {
-        places: [],
-        selectedPlace: null,
-      }
+export default {
+  components:{
+    PlaceForm
   },
-  
+  data(){
+    return {
+      placeToVisit: []
+    };
+  },
+
   methods:{
-        fetchPlaces() {
-          axios.get('https://restcountries.com/v3.1/all').then(response => {
-            this.places = response.data;
-          });
-        },
-        addPlace(){
-          this.$emit('addPlace', this.selectedPlace);
-
-        }
+    handleAddPlace(place){
+      if (place && !this.placeToVisit.includes(place)){
+        this.placeToVisit.push(place);
+      }
+    },
+    removePlace(place){
+      this.placeToVisit = this.placeToVisit.filter(p => p !== place);
+    }
   },
-
-  mounted(){
-    this.fetchPlaces();
-
-  }
 }
+
 </script>
