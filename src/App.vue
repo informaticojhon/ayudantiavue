@@ -3,7 +3,7 @@
   <h1>Lugares que quiero visitar</h1>
   <PlaceForm @add-place="handleAddPlace"/>
   <ul>
-    <li v-for="place in placesToVisit" :key="place">
+    <li v-for="place in placeToVisit" :key="place">
       {{ place }}
       <button @click="removePlace(place)">Eliminar</button>
     </li>
