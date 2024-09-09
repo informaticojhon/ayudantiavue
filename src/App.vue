@@ -15,25 +15,38 @@
 import PlaceForm from './components/PlaceForm.vue';
 
 export default {
-  components:{
-    PlaceForm
+  components: {
+    PlaceForm,
   },
-  data(){
+  data() {
     return {
-      placeToVisit: []
+      placesToVisit: [],
     };
   },
-
-  methods:{
-    handleAddPlace(place){
-      if (place && !this.placeToVisit.includes(place)){
-        this.placeToVisit.push(place);
+  methods: {
+    handleAddPlace(place) {
+      if (place && !this.placesToVisit.includes(place)) {
+        this.placesToVisit.push(place);
+        this.savePlaces();
       }
     },
-    removePlace(place){
-      this.placeToVisit = this.placeToVisit.filter(p => p !== place);
-    }
+    removePlace(place) {
+      this.placesToVisit = this.placesToVisit.filter(p => p !== place);
+      this.savePlaces();
+    },
+    savePlaces() {
+      localStorage.setItem('placesToVisit', JSON.stringify(this.placesToVisit));
+    },
+    loadPlaces() {
+      const savedPlaces = localStorage.getItem('placesToVisit');
+      if (savedPlaces) {
+        this.placesToVisit = JSON.parse(savedPlaces);
+      }
+    },
   },
+  mounted() {
+    this.loadPlaces();
+  }
 }
 
 </script>
